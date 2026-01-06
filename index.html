@@ -575,7 +575,7 @@
       };
     }
 
-    async function submit() {
+ async function submit() {
   if (!validateStep(5)) return;
 
   const utm = getUTM();
@@ -587,7 +587,7 @@
     deseo_30_60: getValue("deseo_30_60"),
     nombre: getValue("nombre"),
     email: getValue("email"),
-    consentimiento: !!getValue("consentimiento"),
+    consentimiento: getValue("consentimiento") ? "true" : "false",
     source_url: location.href,
     utm_source: utm.utm_source,
     utm_medium: utm.utm_medium,
@@ -600,33 +600,17 @@
   backBtn.disabled = true;
 
   try {
+    // 👇 clave: URLSearchParams (NO JSON)
+    const body = new URLSearchParams(payload);
+
     const res = await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "cors",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(payload)
+      body
     });
 
-    const text = await res.text();
-    let json = null;
-
-    try {
-      json = JSON.parse(text);
-    } catch {
-      // Si no es JSON, lo manejamos abajo
-    }
-
-    if (!res.ok || !json || !json.ok) {
-      console.error("❌ Error al enviar encuesta");
-      console.error("➡️ SCRIPT_URL:", SCRIPT_URL);
-      console.error("➡️ HTTP status:", res.status);
-      console.error("➡️ Respuesta cruda:", text);
-
-      throw new Error(
-        "Servidor no devolvió JSON válido. Revisa SCRIPT_URL y el despliegue del Apps Script."
-      );
+    // No intentamos leer JSON si el navegador lo bloquea
+    if (!res.ok) {
+      throw new Error("HTTP error " + res.status);
     }
 
     // ✅ SUCCESS
@@ -643,21 +627,16 @@
     backBtn.style.display = "none";
     saving.style.display = "none";
 
-    if (THANK_YOU_REDIRECT) {
-      setTimeout(() => {
-        window.location.href = THANK_YOU_REDIRECT;
-      }, 600);
-    }
-
   } catch (e) {
     saving.style.display = "none";
     nextBtn.disabled = false;
     backBtn.disabled = false;
 
-    alert("No se ha podido enviar. Revisa tu conexión y prueba otra vez.");
-    console.error("❌ Excepción en submit():", e);
+    alert("No se ha podido enviar. Inténtalo de nuevo.");
+    console.error("Error submit:", e);
   }
 }
+
 
 
     // init
@@ -665,6 +644,7 @@
   </script>
 </body>
 </html>
+
 
 
 
