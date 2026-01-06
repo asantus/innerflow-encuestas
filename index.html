@@ -3,8 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Regalo de Reyes — Guía IA + Dinero | TheInnerFlow</title>
+  <title>Regalo de Reyes — Guía IA + Dinero | The Inner Flow</title>
   <meta name="description" content="Encuesta rápida (1 minuto). Recibe gratis la guía IA + hábitos para ordenar tu dinero." />
+
+  <!-- ✅ FAVICON -->
+  <link rel="icon" href="/favicon.ico" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/favicon.ico" />
 
   <style>
     :root{
@@ -13,8 +18,9 @@
       --card: rgba(255,255,255,.06);
       --text: #ffffff;
       --muted: rgba(255,255,255,.72);
-      --gold: #c9a33f;      /* dorado */
+      --gold: #c9a33f;      /* dorado base */
       --gold2:#e1c26a;
+      --titleYellow: #FFA526; /* ✅ amarillo del título (imagen 4) */
       --line: rgba(255,255,255,.16);
       --danger:#ff6b6b;
       --shadow: 0 18px 50px rgba(0,0,0,.35);
@@ -39,10 +45,11 @@
 
     .wrap{ width:min(920px, 100%); }
 
+    /* ✅ Header topbar en 3 columnas: izquierda (marca), centro (badge), derecha (paso) */
     .topbar{
-      display:flex;
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
       margin-bottom:16px;
     }
@@ -51,21 +58,39 @@
       display:flex;
       align-items:center;
       gap:12px;
+      justify-self:start;
+      min-width: 0;
     }
 
-    .logo{
-      width:40px; height:40px;
+    /* ✅ LOGO real */
+    .logoImg{
+      width:40px;
+      height:40px;
       border-radius:12px;
-      background: linear-gradient(135deg, rgba(201,163,63,.95), rgba(255,255,255,.25));
+      object-fit:cover;
       box-shadow: 0 10px 30px rgba(201,163,63,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.15);
+      flex: 0 0 auto;
     }
 
+    .brandText{
+      min-width: 0;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+    }
+
+    /* ✅ Título en amarillo */
     .brand h1{
       font-size:14px;
       margin:0;
       letter-spacing:.5px;
       text-transform:uppercase;
-      opacity:.92;
+      color: var(--titleYellow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .badge{
@@ -76,6 +101,15 @@
       background: rgba(255,255,255,.06);
       color: var(--muted);
       white-space:nowrap;
+    }
+
+    /* ✅ Badge centrado */
+    .badge.center{
+      justify-self:center;
+    }
+
+    .badge.right{
+      justify-self:end;
     }
 
     .card{
@@ -155,7 +189,19 @@
     }
 
     .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-    @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+    @media (max-width:720px){
+      .grid2{ grid-template-columns:1fr; }
+
+      /* en móvil, el badge centrado baja bien */
+      .topbar{
+        grid-template-columns: 1fr;
+        justify-items:center;
+        gap:10px;
+      }
+      .brand{ justify-self:center; }
+      .badge.center{ justify-self:center; }
+      .badge.right{ justify-self:center; }
+    }
 
     .opt{
       display:flex;
@@ -259,14 +305,19 @@
 <body>
   <div class="wrap">
     <div class="topbar">
+      <!-- IZQUIERDA: marca -->
       <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>TheInnerFlow</h1>
-          <div class="badge">🎁 Regalo de Reyes — hoy</div>
+        <img class="logoImg" src="/logo.png" alt="The Inner Flow" />
+        <div class="brandText">
+          <h1>The Inner Flow</h1>
         </div>
       </div>
-      <div class="badge" id="stepLabel">Paso 1 / 5</div>
+
+      <!-- ✅ CENTRO: badge -->
+      <div class="badge center">🎁 Regalo de Reyes — hoy</div>
+
+      <!-- DERECHA: paso -->
+      <div class="badge right" id="stepLabel">Paso 1 / 5</div>
     </div>
 
     <div class="card">
@@ -396,7 +447,7 @@
           <div class="error" id="err4">Escribe una respuesta para continuar.</div>
         </section>
 
-        <!-- STEP 5 (CAPTURA) -->
+        <!-- STEP 5 -->
         <section class="step" data-step="5">
           <p class="q">🎁 Último paso: ¿a qué email te envío el regalo de Reyes?</p>
           <p class="hint">Te lo envío a quienes se apuntan hoy. Cero spam.</p>
@@ -452,7 +503,7 @@
   <script>
     // ========= CONFIG =========
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKapHar5oIxXPDpgAXuBIt8_2psEPgIMB82xIa7Jndjtb9TZgf_zrhN9n35490TyIt/exec"; // <-- pega aquí tu /exec (Apps Script)
-    const THANK_YOU_REDIRECT = ""; // opcional: "https://www.theinnerflow.ai/gracias"
+    const THANK_YOU_REDIRECT = ""; // opcional
 
     // ========= STATE =========
     const form = document.getElementById("survey");
@@ -465,7 +516,7 @@
     const TOTAL_STEPS = 5;
     let current = 1;
 
-    // Auto-advance en radios (UX rápida)
+    // Auto-advance en radios
     form.addEventListener("change", (e) => {
       const el = e.target;
       if (el && el.type === "radio") {
@@ -478,12 +529,12 @@
     function showStep(n) {
       document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
 
-      const step = document.querySelector(`.step[data-step="${n}"]`);
+      const step = document.querySelector(\`.step[data-step="\${n}"]\`);
       if (step) step.classList.add("active");
 
       backBtn.style.display = (n <= 1 || n === "success") ? "none" : "inline-block";
       nextBtn.style.display = (n === "success") ? "none" : "inline-block";
-      stepLabel.textContent = (n === "success") ? "Completado" : `Paso ${n} / ${TOTAL_STEPS}`;
+      stepLabel.textContent = (n === "success") ? "Completado" : \`Paso \${n} / \${TOTAL_STEPS}\`;
 
       const pct = (n === "success") ? 100 : Math.round(((n - 1) / (TOTAL_STEPS)) * 100);
       progressBar.style.width = pct + "%";
@@ -497,7 +548,7 @@
       const el = form.elements[name];
       if (!el) return "";
       if (el.type === "radio") {
-        const checked = form.querySelector(`input[name="${name}"]:checked`);
+        const checked = form.querySelector(\`input[name="\${name}"]:checked\`);
         return checked ? checked.value : "";
       }
       if (el.type === "checkbox") return el.checked;
@@ -532,7 +583,7 @@
         const consent = getValue("consentimiento");
         if (!email || !email.includes("@") || !consent) return showErr("err5");
 
-        // honeypot: si lo rellena un bot, no enviamos (silencioso)
+        // honeypot anti-bots
         const hp = getValue("website");
         if (hp) return false;
       }
@@ -575,77 +626,65 @@
       };
     }
 
- async function submit() {
-  if (!validateStep(5)) return;
+    // ✅ Envío sin preflight (URLSearchParams)
+    async function submit() {
+      if (!validateStep(5)) return;
 
-  const utm = getUTM();
+      const utm = getUTM();
 
-  const payload = {
-    estado_dinero: getValue("estado_dinero"),
-    objetivo_principal: getValue("objetivo_principal"),
-    uso_ia: getValue("uso_ia"),
-    deseo_30_60: getValue("deseo_30_60"),
-    nombre: getValue("nombre"),
-    email: getValue("email"),
-    consentimiento: getValue("consentimiento") ? "true" : "false",
-    source_url: location.href,
-    utm_source: utm.utm_source,
-    utm_medium: utm.utm_medium,
-    utm_campaign: utm.utm_campaign,
-    user_agent: navigator.userAgent
-  };
+      const payload = {
+        estado_dinero: getValue("estado_dinero"),
+        objetivo_principal: getValue("objetivo_principal"),
+        uso_ia: getValue("uso_ia"),
+        deseo_30_60: getValue("deseo_30_60"),
+        nombre: getValue("nombre"),
+        email: getValue("email"),
+        consentimiento: getValue("consentimiento") ? "true" : "false",
+        source_url: location.href,
+        utm_source: utm.utm_source,
+        utm_medium: utm.utm_medium,
+        utm_campaign: utm.utm_campaign,
+        user_agent: navigator.userAgent
+      };
 
-  saving.style.display = "inline";
-  nextBtn.disabled = true;
-  backBtn.disabled = true;
+      saving.style.display = "inline";
+      nextBtn.disabled = true;
+      backBtn.disabled = true;
 
-  try {
-    // 👇 clave: URLSearchParams (NO JSON)
-    const body = new URLSearchParams(payload);
+      try {
+        const body = new URLSearchParams(payload);
 
-    const res = await fetch(SCRIPT_URL, {
-      method: "POST",
-      body
-    });
+        const res = await fetch(SCRIPT_URL, {
+          method: "POST",
+          body
+        });
 
-    // No intentamos leer JSON si el navegador lo bloquea
-    if (!res.ok) {
-      throw new Error("HTTP error " + res.status);
+        if (!res.ok) throw new Error("HTTP " + res.status);
+
+        // success
+        document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+        document.querySelector('.step[data-step="success"]').classList.add("active");
+        progressBar.style.width = "100%";
+        stepLabel.textContent = "Completado";
+        nextBtn.style.display = "none";
+        backBtn.style.display = "none";
+        saving.style.display = "none";
+
+        if (THANK_YOU_REDIRECT) {
+          setTimeout(() => window.location.href = THANK_YOU_REDIRECT, 600);
+        }
+
+      } catch (e) {
+        saving.style.display = "none";
+        nextBtn.disabled = false;
+        backBtn.disabled = false;
+        alert("No se ha podido enviar. Inténtalo de nuevo.");
+        console.error(e);
+      }
     }
-
-    // ✅ SUCCESS
-    document.querySelectorAll(".step").forEach(s =>
-      s.classList.remove("active")
-    );
-    document
-      .querySelector('.step[data-step="success"]')
-      .classList.add("active");
-
-    progressBar.style.width = "100%";
-    stepLabel.textContent = "Completado";
-    nextBtn.style.display = "none";
-    backBtn.style.display = "none";
-    saving.style.display = "none";
-
-  } catch (e) {
-    saving.style.display = "none";
-    nextBtn.disabled = false;
-    backBtn.disabled = false;
-
-    alert("No se ha podido enviar. Inténtalo de nuevo.");
-    console.error("Error submit:", e);
-  }
-}
-
-
 
     // init
     showStep(current);
   </script>
 </body>
 </html>
-
-
-
-
-
