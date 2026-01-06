@@ -42,13 +42,13 @@
 
     .wrap{ width:min(920px, 100%); }
 
+     /* ✅ Header topbar en 3 columnas: izquierda (marca), centro (badge), derecha (paso) */
     .topbar{
-      display:flex;
+      display:grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items:center;
-      justify-content:space-between;
       gap:12px;
       margin-bottom:16px;
-    }
 
     .brand{
       display:flex;
@@ -56,11 +56,16 @@
       gap:12px;
     }
 
-    .logo{
-      width:40px; height:40px;
+     /* ✅ LOGO real */
+    .logoImg{
+      width:40px;
+      height:40px;
       border-radius:12px;
-      background: linear-gradient(135deg, rgba(201,163,63,.95), rgba(255,255,255,.25));
+      object-fit:cover;
       box-shadow: 0 10px 30px rgba(201,163,63,.25);
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.15);
+      flex: 0 0 auto;
     }
 
     .brand h1{
@@ -69,6 +74,17 @@
       letter-spacing:.5px;
       text-transform:uppercase;
       opacity:.92;
+    }
+      /* ✅ Título en amarillo */
+    .brand h1{
+      font-size:14px;
+      margin:0;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      color: var(--titleYellow);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
     }
 
     .badge{
@@ -650,6 +666,7 @@
   </script>
 </body>
 </html>
+
 
 
 
