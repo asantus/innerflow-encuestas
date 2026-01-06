@@ -575,73 +575,96 @@
       };
     }
 
-    async function submit(){
-      if (!validateStep(5)) return;
+    async function submit() {
+  if (!validateStep(5)) return;
 
-      const utm = getUTM();
+  const utm = getUTM();
 
-      const payload = {
-        estado_dinero: getValue("estado_dinero"),
-        objetivo_principal: getValue("objetivo_principal"),
-        uso_ia: getValue("uso_ia"),
-        deseo_30_60: getValue("deseo_30_60"),
-        nombre: getValue("nombre"),
-        email: getValue("email"),
-        consentimiento: !!getValue("consentimiento"),
-        source_url: location.href,
-        utm_source: utm.utm_source,
-        utm_medium: utm.utm_medium,
-        utm_campaign: utm.utm_campaign,
-        user_agent: navigator.userAgent
-      };
+  const payload = {
+    estado_dinero: getValue("estado_dinero"),
+    objetivo_principal: getValue("objetivo_principal"),
+    uso_ia: getValue("uso_ia"),
+    deseo_30_60: getValue("deseo_30_60"),
+    nombre: getValue("nombre"),
+    email: getValue("email"),
+    consentimiento: !!getValue("consentimiento"),
+    source_url: location.href,
+    utm_source: utm.utm_source,
+    utm_medium: utm.utm_medium,
+    utm_campaign: utm.utm_campaign,
+    user_agent: navigator.userAgent
+  };
 
-      saving.style.display = "inline";
-      nextBtn.disabled = true;
-      backBtn.disabled = true;
+  saving.style.display = "inline";
+  nextBtn.disabled = true;
+  backBtn.disabled = true;
 
-      try {
-        const res = await fetch(SCRIPT_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
+  try {
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(payload)
+    });
 
-        const text = await res.text();
-        let json = null;
+    const text = await res.text();
+    let json = null;
 
-        try { json = JSON.parse(text); } catch {}
-
-        if (!res.ok || !json || !json.ok) {
-          console.error("Respuesta servidor:", { status: res.status, text });
-          throw new Error("Servidor no devolvió JSON válido (revisa SCRIPT_URL y despliegue).");
-        }
-
-        // success
-        document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
-        document.querySelector('.step[data-step="success"]').classList.add("active");
-        progressBar.style.width = "100%";
-        stepLabel.textContent = "Completado";
-        nextBtn.style.display = "none";
-        backBtn.style.display = "none";
-        saving.style.display = "none";
-
-        if (THANK_YOU_REDIRECT) {
-          setTimeout(() => window.location.href = THANK_YOU_REDIRECT, 600);
-        }
-
-      } catch (e) {
-        saving.style.display = "none";
-        nextBtn.disabled = false;
-        backBtn.disabled = false;
-        alert("No se ha podido enviar. Revisa tu conexión y prueba otra vez.");
-        console.error(e);
-      }
+    try {
+      json = JSON.parse(text);
+    } catch {
+      // Si no es JSON, lo manejamos abajo
     }
+
+    if (!res.ok || !json || !json.ok) {
+      console.error("❌ Error al enviar encuesta");
+      console.error("➡️ SCRIPT_URL:", SCRIPT_URL);
+      console.error("➡️ HTTP status:", res.status);
+      console.error("➡️ Respuesta cruda:", text);
+
+      throw new Error(
+        "Servidor no devolvió JSON válido. Revisa SCRIPT_URL y el despliegue del Apps Script."
+      );
+    }
+
+    // ✅ SUCCESS
+    document.querySelectorAll(".step").forEach(s =>
+      s.classList.remove("active")
+    );
+    document
+      .querySelector('.step[data-step="success"]')
+      .classList.add("active");
+
+    progressBar.style.width = "100%";
+    stepLabel.textContent = "Completado";
+    nextBtn.style.display = "none";
+    backBtn.style.display = "none";
+    saving.style.display = "none";
+
+    if (THANK_YOU_REDIRECT) {
+      setTimeout(() => {
+        window.location.href = THANK_YOU_REDIRECT;
+      }, 600);
+    }
+
+  } catch (e) {
+    saving.style.display = "none";
+    nextBtn.disabled = false;
+    backBtn.disabled = false;
+
+    alert("No se ha podido enviar. Revisa tu conexión y prueba otra vez.");
+    console.error("❌ Excepción en submit():", e);
+  }
+}
+
 
     // init
     showStep(current);
   </script>
 </body>
 </html>
+
 
 
