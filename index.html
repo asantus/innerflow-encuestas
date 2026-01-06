@@ -9,7 +9,657 @@
   <!-- ✅ FAVICON -->
   <link rel="icon" href="/favicon.ico" />
   <link rel="shortcut icon" href="/favicon.ico" />
-  <link rel="apple-touch-icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/favicon.ico" /><!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Regalo de Reyes — Guía IA + Dinero | TheInnerFlow</title>
+  <meta name="description" content="Encuesta rápida (1 minuto). Recibe gratis la guía IA + hábitos para ordenar tu dinero." />
+
+  <style>
+    :root{
+      /* Paleta TheInnerFlow */
+      --bg: #0b1f3a;        /* azul profundo */
+      --card: rgba(255,255,255,.06);
+      --text: #ffffff;
+      --muted: rgba(255,255,255,.72);
+      --gold: #c9a33f;      /* dorado */
+      --gold2:#e1c26a;
+      --line: rgba(255,255,255,.16);
+      --danger:#ff6b6b;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background:
+        radial-gradient(1200px 800px at 20% 10%, rgba(201,163,63,.28), transparent 55%),
+        radial-gradient(900px 700px at 80% 20%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, #07162a, var(--bg));
+      color: var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 28px 16px;
+    }
+
+    .wrap{ width:min(920px, 100%); }
+
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+    }
+
+    .logo{
+      width:40px; height:40px;
+      border-radius:12px;
+      background: linear-gradient(135deg, rgba(201,163,63,.95), rgba(255,255,255,.25));
+      box-shadow: 0 10px 30px rgba(201,163,63,.25);
+    }
+
+    .brand h1{
+      font-size:14px;
+      margin:0;
+      letter-spacing:.5px;
+      text-transform:uppercase;
+      opacity:.92;
+    }
+
+    .badge{
+      font-size:12px;
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    .card{
+      background: linear-gradient(180deg, var(--card), rgba(255,255,255,.03));
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+    }
+
+    .header{
+      padding: 22px 22px 16px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(90deg, rgba(201,163,63,.12), transparent 55%);
+    }
+
+    .title{
+      margin:0 0 6px 0;
+      font-size:22px;
+      letter-spacing:.2px;
+    }
+
+    .subtitle{
+      margin:0;
+      color: var(--muted);
+      line-height:1.35;
+      font-size:14px;
+    }
+
+    .progress{
+      height:10px;
+      background: rgba(255,255,255,.08);
+      border-radius:999px;
+      overflow:hidden;
+      margin-top:14px;
+      border:1px solid rgba(255,255,255,.10);
+    }
+
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      transition: width .25s ease;
+    }
+
+    form{ padding:22px; }
+
+    .step{
+      display:none;
+      animation: fade .18s ease;
+    }
+    .step.active{ display:block; }
+
+    @keyframes fade{
+      from{ opacity:.55; transform:translateY(4px); }
+      to{ opacity:1; transform:translateY(0); }
+    }
+
+    .q{
+      margin: 0 0 12px 0;
+      font-size:16px;
+      letter-spacing:.1px;
+    }
+
+    .hint{
+      margin: -6px 0 16px 0;
+      color: var(--muted);
+      font-size:13px;
+      line-height:1.4;
+    }
+
+    .options{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:10px;
+      margin-top:10px;
+    }
+
+    .grid2{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    @media (max-width:720px){ .grid2{ grid-template-columns:1fr; } }
+
+    .opt{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.05);
+      cursor:pointer;
+      transition: transform .06s ease, background .18s ease;
+    }
+    .opt:hover{ background: rgba(255,255,255,.08); }
+    .opt:active{ transform: scale(.99); }
+    .opt input{ margin-top:2px; accent-color: var(--gold); }
+    .opt b{ display:block; font-size:14px; }
+    .opt span{ display:block; color: var(--muted); font-size:12px; margin-top:2px; }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-top:12px;
+    }
+
+    label{ font-size:12px; color: var(--muted); }
+
+    input[type="text"], input[type="email"], textarea{
+      width:100%;
+      padding:12px 12px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      outline:none;
+    }
+
+    textarea{ min-height:110px; resize:vertical; }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      padding:11px 14px;
+      border-radius:12px;
+      cursor:pointer;
+      transition: background .18s ease, transform .06s ease;
+    }
+    .btn:hover{ background: rgba(255,255,255,.10); }
+    .btn:active{ transform: scale(.99); }
+
+    .btn.primary{
+      border-color: rgba(201,163,63,.65);
+      background: linear-gradient(90deg, rgba(201,163,63,.95), rgba(225,194,106,.80));
+      color:#08162a;
+      font-weight:700;
+    }
+
+    .error{
+      margin-top:10px;
+      color: var(--danger);
+      font-size:13px;
+      display:none;
+    }
+    .error.show{ display:block; }
+
+    .fineprint{
+      margin-top:14px;
+      color: rgba(255,255,255,.64);
+      font-size:12px;
+      line-height:1.35;
+    }
+
+    .success{
+      text-align:center;
+      padding: 16px 0 6px;
+    }
+    .success h2{ margin:0 0 8px 0; font-size:20px; }
+    .success p{ margin:0; color: var(--muted); }
+
+    .link{
+      color: var(--gold2);
+      text-decoration:none;
+      border-bottom:1px dashed rgba(225,194,106,.55);
+    }
+
+    /* honeypot */
+    .hp{ position:absolute; left:-9999px; top:-9999px; opacity:0; }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>TheInnerFlow</h1>
+          <div class="badge">🎁 Regalo de Reyes — hoy</div>
+        </div>
+      </div>
+      <div class="badge" id="stepLabel">Paso 1 / 5</div>
+    </div>
+
+    <div class="card">
+      <div class="header">
+        <h2 class="title">Recibe gratis la guía: IA + Dinero (sin humo)</h2>
+        <p class="subtitle">
+          Encuesta rápida (≈ 60 segundos). Con tus respuestas ajusto la guía y te la envío.
+          <br/>Objetivo: claridad, menos estrés y un sistema simple que puedas mantener.
+        </p>
+
+        <div class="progress" aria-label="Progreso">
+          <div id="progressBar"></div>
+        </div>
+      </div>
+
+      <form id="survey">
+        <!-- honeypot anti-spam -->
+        <div class="hp">
+          <label>Si eres humano, deja esto vacío</label>
+          <input type="text" name="website" autocomplete="off" />
+        </div>
+
+        <!-- STEP 1 -->
+        <section class="step active" data-step="1">
+          <p class="q">Ahora mismo, con tu dinero te sientes más bien…</p>
+          <p class="hint">No hay respuesta correcta. Solo honestidad.</p>
+
+          <div class="options">
+            <label class="opt">
+              <input type="radio" name="estado_dinero" value="Desordenado/sin control" required />
+              <div><b>😵 Desordenado / sin control</b><span>Me cuesta ver el panorama completo.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="estado_dinero" value="Estable pero sin avanzar" />
+              <div><b>😐 Estable, pero sin avanzar</b><span>Estoy bien, pero no siento crecimiento.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="estado_dinero" value="Con estrés" />
+              <div><b>😬 Con estrés</b><span>Me genera tensión o incertidumbre.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="estado_dinero" value="Bien pero mejorable" />
+              <div><b>🙂 Bastante bien, pero mejorable</b><span>Quiero afinar y automatizar decisiones.</span></div>
+            </label>
+          </div>
+
+          <div class="error" id="err1">Elige una opción para continuar.</div>
+        </section>
+
+        <!-- STEP 2 -->
+        <section class="step" data-step="2">
+          <p class="q">¿Qué te gustaría mejorar ahora mismo?</p>
+          <p class="hint">Elige lo que más impacto tendría en tu vida.</p>
+
+          <div class="options grid2">
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Ahorrar con constancia" required />
+              <div><b>Ahorrar con constancia</b><span>Colchón, fondo, paz mental.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Gastos impulsivos" />
+              <div><b>Dejar de gastar por impulso</b><span>Menos fugas, más control.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Tener claridad" />
+              <div><b>Tener más claridad</b><span>Ver números y decidir sin estrés.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Generar más ingresos" />
+              <div><b>Generar más ingresos</b><span>Ideas realistas y accionables.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Reducir deudas" />
+              <div><b>Reducir deudas</b><span>Plan simple, sin culpa.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="objetivo_principal" value="Organizarme mejor" />
+              <div><b>Organizarme mejor</b><span>Rutinas, Money Hour, automatización.</span></div>
+            </label>
+          </div>
+
+          <div class="error" id="err2">Elige una opción para continuar.</div>
+        </section>
+
+        <!-- STEP 3 -->
+        <section class="step" data-step="3">
+          <p class="q">¿Usas inteligencia artificial en tu día a día?</p>
+          <p class="hint">Esto me ayuda a adaptar la guía a tu nivel.</p>
+
+          <div class="options">
+            <label class="opt">
+              <input type="radio" name="uso_ia" value="No" required />
+              <div><b>No</b><span>Quiero algo muy simple para empezar.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="uso_ia" value="Un poco" />
+              <div><b>Un poco</b><span>Uso IA para cosas puntuales.</span></div>
+            </label>
+
+            <label class="opt">
+              <input type="radio" name="uso_ia" value="Bastante" />
+              <div><b>Bastante</b><span>Quiero prompts y estructura más avanzada.</span></div>
+            </label>
+          </div>
+
+          <div class="error" id="err3">Elige una opción para continuar.</div>
+        </section>
+
+        <!-- STEP 4 -->
+        <section class="step" data-step="4">
+          <p class="q">Si dentro de 30–60 días esto hubiera mejorado, ¿qué sería distinto para ti?</p>
+          <p class="hint">Respuesta breve. Esta pregunta es la más importante.</p>
+
+          <div class="field">
+            <textarea name="deseo_30_60" placeholder="Ej: tener 300€ de colchón, gastar con intención, reducir ansiedad, conseguir 1–2 clientes extra…" required></textarea>
+          </div>
+
+          <div class="error" id="err4">Escribe una respuesta para continuar.</div>
+        </section>
+
+        <!-- STEP 5 (CAPTURA) -->
+        <section class="step" data-step="5">
+          <p class="q">🎁 Último paso: ¿a qué email te envío el regalo de Reyes?</p>
+          <p class="hint">Te lo envío a quienes se apuntan hoy. Cero spam.</p>
+
+          <div class="field">
+            <label>Nombre (opcional)</label>
+            <input type="text" name="nombre" placeholder="Tu nombre" />
+          </div>
+
+          <div class="field">
+            <label>Email</label>
+            <input type="email" name="email" placeholder="tucorreo@..." required />
+          </div>
+
+          <div class="field">
+            <label style="display:flex; gap:10px; align-items:flex-start;">
+              <input type="checkbox" name="consentimiento" required style="margin-top:3px; accent-color: var(--gold);" />
+              <span style="color: var(--muted); font-size: 12px; line-height: 1.35;">
+                Acepto que me envíes la guía y comunicaciones relacionadas. Puedo darme de baja cuando quiera.
+              </span>
+            </label>
+          </div>
+
+          <div class="error" id="err5">Revisa el email y marca el consentimiento.</div>
+
+          <p class="fineprint">
+            Consejo: guarda este enlace si quieres reenviarlo a alguien.
+          </p>
+        </section>
+
+        <!-- SUCCESS -->
+        <section class="step" data-step="success">
+          <div class="success">
+            <h2>¡Listo! 🙌</h2>
+            <p>Ya estás dentro. Te enviaré la guía al email que has indicado.</p>
+            <p style="margin-top:10px;">
+              <a class="link" href="javascript:void(0)" id="restart">Volver a empezar</a>
+            </p>
+          </div>
+        </section>
+
+        <div class="row">
+          <button type="button" class="btn" id="backBtn">← Atrás</button>
+          <div style="display:flex; gap:10px; align-items:center;">
+            <span id="saving" style="display:none; color: var(--muted); font-size: 12px;">Enviando…</span>
+            <button type="button" class="btn primary" id="nextBtn">Continuar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // ========= CONFIG =========
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwKapHar5oIxXPDpgAXuBIt8_2psEPgIMB82xIa7Jndjtb9TZgf_zrhN9n35490TyIt/exec"; // <-- pega aquí tu /exec (Apps Script)
+    const THANK_YOU_REDIRECT = ""; // opcional: "https://www.theinnerflow.ai/gracias"
+
+    // ========= STATE =========
+    const form = document.getElementById("survey");
+    const progressBar = document.getElementById("progressBar");
+    const stepLabel = document.getElementById("stepLabel");
+    const nextBtn = document.getElementById("nextBtn");
+    const backBtn = document.getElementById("backBtn");
+    const saving = document.getElementById("saving");
+
+    const TOTAL_STEPS = 5;
+    let current = 1;
+
+    // Auto-advance en radios (UX rápida)
+    form.addEventListener("change", (e) => {
+      const el = e.target;
+      if (el && el.type === "radio") {
+        setTimeout(() => {
+          if (current < TOTAL_STEPS) goNext();
+        }, 120);
+      }
+    });
+
+    function showStep(n) {
+      document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+
+      const step = document.querySelector(`.step[data-step="${n}"]`);
+      if (step) step.classList.add("active");
+
+      backBtn.style.display = (n <= 1 || n === "success") ? "none" : "inline-block";
+      nextBtn.style.display = (n === "success") ? "none" : "inline-block";
+      stepLabel.textContent = (n === "success") ? "Completado" : `Paso ${n} / ${TOTAL_STEPS}`;
+
+      const pct = (n === "success") ? 100 : Math.round(((n - 1) / (TOTAL_STEPS)) * 100);
+      progressBar.style.width = pct + "%";
+
+      document.querySelectorAll(".error").forEach(x => x.classList.remove("show"));
+
+      nextBtn.textContent = (n === TOTAL_STEPS) ? "Enviar 🎁" : "Continuar";
+    }
+
+    function getValue(name) {
+      const el = form.elements[name];
+      if (!el) return "";
+      if (el.type === "radio") {
+        const checked = form.querySelector(`input[name="${name}"]:checked`);
+        return checked ? checked.value : "";
+      }
+      if (el.type === "checkbox") return el.checked;
+      return (el.value || "").trim();
+    }
+
+    function showErr(id){
+      const el = document.getElementById(id);
+      if (el) el.classList.add("show");
+      return false;
+    }
+
+    function validateStep(n) {
+      if (n === 1) {
+        const v = getValue("estado_dinero");
+        if (!v) return showErr("err1");
+      }
+      if (n === 2) {
+        const v = getValue("objetivo_principal");
+        if (!v) return showErr("err2");
+      }
+      if (n === 3) {
+        const v = getValue("uso_ia");
+        if (!v) return showErr("err3");
+      }
+      if (n === 4) {
+        const v = getValue("deseo_30_60");
+        if (!v || v.length < 4) return showErr("err4");
+      }
+      if (n === 5) {
+        const email = getValue("email");
+        const consent = getValue("consentimiento");
+        if (!email || !email.includes("@") || !consent) return showErr("err5");
+
+        // honeypot: si lo rellena un bot, no enviamos (silencioso)
+        const hp = getValue("website");
+        if (hp) return false;
+      }
+      return true;
+    }
+
+    function goNext(){
+      if (!validateStep(current)) return;
+
+      if (current < TOTAL_STEPS) {
+        current += 1;
+        showStep(current);
+      } else {
+        submit();
+      }
+    }
+
+    function goBack(){
+      if (current > 1) {
+        current -= 1;
+        showStep(current);
+      }
+    }
+
+    nextBtn.addEventListener("click", goNext);
+    backBtn.addEventListener("click", goBack);
+
+    document.getElementById("restart").addEventListener("click", () => {
+      form.reset();
+      current = 1;
+      showStep(current);
+    });
+
+    function getUTM() {
+      const p = new URLSearchParams(location.search);
+      return {
+        utm_source: p.get("utm_source") || "",
+        utm_medium: p.get("utm_medium") || "",
+        utm_campaign: p.get("utm_campaign") || ""
+      };
+    }
+
+ async function submit() {
+  if (!validateStep(5)) return;
+
+  const utm = getUTM();
+
+  const payload = {
+    estado_dinero: getValue("estado_dinero"),
+    objetivo_principal: getValue("objetivo_principal"),
+    uso_ia: getValue("uso_ia"),
+    deseo_30_60: getValue("deseo_30_60"),
+    nombre: getValue("nombre"),
+    email: getValue("email"),
+    consentimiento: getValue("consentimiento") ? "true" : "false",
+    source_url: location.href,
+    utm_source: utm.utm_source,
+    utm_medium: utm.utm_medium,
+    utm_campaign: utm.utm_campaign,
+    user_agent: navigator.userAgent
+  };
+
+  saving.style.display = "inline";
+  nextBtn.disabled = true;
+  backBtn.disabled = true;
+
+  try {
+    // 👇 clave: URLSearchParams (NO JSON)
+    const body = new URLSearchParams(payload);
+
+    const res = await fetch(SCRIPT_URL, {
+      method: "POST",
+      body
+    });
+
+    // No intentamos leer JSON si el navegador lo bloquea
+    if (!res.ok) {
+      throw new Error("HTTP error " + res.status);
+    }
+
+    // ✅ SUCCESS
+    document.querySelectorAll(".step").forEach(s =>
+      s.classList.remove("active")
+    );
+    document
+      .querySelector('.step[data-step="success"]')
+      .classList.add("active");
+
+    progressBar.style.width = "100%";
+    stepLabel.textContent = "Completado";
+    nextBtn.style.display = "none";
+    backBtn.style.display = "none";
+    saving.style.display = "none";
+
+  } catch (e) {
+    saving.style.display = "none";
+    nextBtn.disabled = false;
+    backBtn.disabled = false;
+
+    alert("No se ha podido enviar. Inténtalo de nuevo.");
+    console.error("Error submit:", e);
+  }
+}
+
+
+
+    // init
+    showStep(current);
+  </script>
+</body>
+</html>
+
+
+
+
+
 
   <style>
     :root{
@@ -688,3 +1338,4 @@
   </script>
 </body>
 </html>
+
